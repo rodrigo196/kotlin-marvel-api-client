@@ -3,8 +3,8 @@ package br.com.bulgasoftwares.feedreader.model.bussines
 import android.util.Log
 import br.com.bulgasoftwares.feedreader.model.bean.Response
 import br.com.bulgasoftwares.feedreader.model.network.RestApi
-import javax.inject.Singleton
 import rx.Observable
+import javax.inject.Singleton
 
 @Singleton
 class MarvelBO(val api: RestApi) {
@@ -15,6 +15,25 @@ class MarvelBO(val api: RestApi) {
             subscriber ->
             Log.d("MarvelBO", "Getting after $after + limit $limit")
             val callResponse = api.getCharacters(after, limit)
+            val response = callResponse.execute()
+
+            if (response.isSuccessful){
+                val dataResponse = response.body()
+
+                subscriber.onNext(dataResponse)
+                subscriber.onCompleted()
+            } else {
+                subscriber.onError(Throwable(response.message()))
+            }
+        }
+
+    }
+
+    fun getCharacter(characterId: String) : Observable<Response> {
+
+        return Observable.create {
+            subscriber ->
+            val callResponse = api.getCharacter(characterId)
             val response = callResponse.execute()
 
             if (response.isSuccessful){

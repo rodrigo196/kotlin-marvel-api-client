@@ -5,10 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-
-/**
- * Extensions for simpler launching of Activities
- */
+import com.google.firebase.analytics.FirebaseAnalytics
 
 inline fun <reified T : Any> Activity.launchActivity(
         requestCode: Int = -1,
@@ -39,3 +36,8 @@ inline fun <reified T : Any> Context.launchActivity(
 
 inline fun <reified T : Any> newIntent(context: Context): Intent =
         Intent(context, T::class.java)
+
+val Activity.analytics: FirebaseAnalytics
+    get() {
+        return FirebaseAnalytics.getInstance(this)
+    }

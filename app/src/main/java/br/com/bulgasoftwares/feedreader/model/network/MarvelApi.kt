@@ -3,6 +3,7 @@ package br.com.bulgasoftwares.feedreader.model.network
 import br.com.bulgasoftwares.feedreader.model.bean.Response
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 
@@ -14,4 +15,10 @@ interface MarvelApi {
                       @Query("ts") timeStamp:String,
                       @Query("hash") hash: String)
     : Call<Response>
+
+    @GET("/v1/public/characters/{characterId}?apikey=656f7423c05cd2ca705607bbc40e56bf")
+    fun getCharacter(@Path("characterId") characterId: String,
+                     @Query("ts") timeStamp:String,
+                     @Query("hash") hash: String)
+            : Call<Response>
 }

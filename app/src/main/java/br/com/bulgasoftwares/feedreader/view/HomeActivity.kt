@@ -9,11 +9,13 @@ import android.support.v7.widget.Toolbar
 import android.util.Log
 import br.com.bulgasoftwares.feedreader.R
 import br.com.bulgasoftwares.feedreader.controller.CharacterListAdapter
+import br.com.bulgasoftwares.feedreader.extensions.analytics
 import br.com.bulgasoftwares.feedreader.extensions.launchActivity
 import br.com.bulgasoftwares.feedreader.model.bean.Character
 import br.com.bulgasoftwares.feedreader.model.bean.Response
 import br.com.bulgasoftwares.feedreader.model.bussines.MarvelBO
 import br.com.bulgasoftwares.feedreader.model.network.RestApi
+import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.android.synthetic.main.content_home.*
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -22,8 +24,9 @@ import rx.subscriptions.CompositeSubscription
 class HomeActivity : AppCompatActivity() {
 
     private var subscriptions = CompositeSubscription()
-    private var bo = MarvelBO(RestApi())
     private var response: Response? = null
+
+    private val bo = MarvelBO(RestApi())
 
     companion object {
         private val KEY_CHARACTERS_LIST = "charactersList"
@@ -36,14 +39,20 @@ class HomeActivity : AppCompatActivity() {
         toolbar.title = "Marvel characters"
         setSupportActionBar(toolbar)
 
-        val feedList : RecyclerView = findViewById(R.id.feed_list) as RecyclerView
+        val feedList: RecyclerView = findViewById(R.id.feed_list) as RecyclerView
         val linearLayout = LinearLayoutManager(this)
         feedList.layoutManager = linearLayout
         feedList.clearOnScrollListeners()
-        feedList.addOnScrollListener(InfiniteScrollListener({requestCharacters()}, linearLayout))
+        feedList.addOnScrollListener(InfiniteScrollListener({ requestCharacters() }, linearLayout))
 
-        val adapter  = CharacterListAdapter(feedList = ArrayList<Character>()){
+        val adapter = CharacterListAdapter(feedList = ArrayList<Character>()) {
             launchActivity<DetailActivity> { putExtra(DetailActivity.CHARACTER_OBJECT_KEY, it) }
+
+            val bundle = Bundle()
+            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, it.id.toString())
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, it.name)
+            bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "character")
+            analytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
         }
 
         feedList.adapter = adapter
@@ -76,7 +85,7 @@ class HomeActivity : AppCompatActivity() {
         subscriptions.clear()
     }
 
-    private fun requestCharacters(){
+    private fun requestCharacters() {
 
         val offset = response?.data?.offset ?: 0
         val count = response?.data?.count ?: 0

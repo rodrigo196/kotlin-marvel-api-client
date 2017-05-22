@@ -19,9 +19,14 @@ class RestApi {
         marvelApi = retrofit.create(MarvelApi::class.java)
     }
 
-    fun getCharacters(after: String, limit: String) : Call<Response> {
+    fun getCharacters(after: String, limit: String): Call<Response> {
         val msa = MarvelServerAuthentication()
         return marvelApi.getCharacters(limit, after, msa.timeStamp, msa.hash)
+    }
+
+    fun getCharacter(characterId: String): Call<Response> {
+        val msa = MarvelServerAuthentication()
+        return marvelApi.getCharacter(characterId, msa.timeStamp, msa.hash)
     }
 
 }
