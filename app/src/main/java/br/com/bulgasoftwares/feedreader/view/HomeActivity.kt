@@ -9,7 +9,7 @@ import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.widget.Toast
 import br.com.bulgasoftwares.feedreader.R
-import br.com.bulgasoftwares.feedreader.controller.FeedListAdapter
+import br.com.bulgasoftwares.feedreader.controller.CharacterListAdapter
 import br.com.bulgasoftwares.feedreader.model.bean.Character
 import br.com.bulgasoftwares.feedreader.model.bean.Response
 import br.com.bulgasoftwares.feedreader.model.bussines.MarvelBO
@@ -41,7 +41,7 @@ class HomeActivity : AppCompatActivity() {
         feedList.clearOnScrollListeners()
         feedList.addOnScrollListener(InfiniteScrollListener({requestCharacters()}, linearLayout))
 
-        val adapter  = FeedListAdapter(feedList = ArrayList<Character>()){
+        val adapter  = CharacterListAdapter(feedList = ArrayList<Character>()){
             Toast.makeText(this, "Clicked item " + it.name, Toast.LENGTH_SHORT).show()
         }
 
@@ -61,7 +61,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         if (response != null && response!!.data.results.isNotEmpty()) {
-            response!!.data.results = (feed_list.adapter as FeedListAdapter).feedList.toMutableList()
+            response!!.data.results = (feed_list.adapter as CharacterListAdapter).feedList.toMutableList()
             outState.putSerializable(KEY_CHARACTERS_LIST, response)
         }
     }
@@ -77,15 +77,17 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun requestCharacters(){
+
         val offset = response?.data?.offset ?: 0
         val count = response?.data?.count ?: 0
+
         val subscription = bo.getCharacters((offset + count).toString())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         { retrieved ->
                             response = retrieved
-                            (feed_list.adapter as FeedListAdapter).addCharacters(response?.data?.results!!.toMutableList())
+                            (feed_list.adapter as CharacterListAdapter).addCharacters(response?.data?.results!!.toMutableList())
                         },
                         { e ->
                             Log.e("MarvelBO", e.message)

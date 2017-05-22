@@ -10,8 +10,8 @@ import br.com.bulgasoftwares.feedreader.model.bean.Character
 import kotlinx.android.synthetic.main.feed_item.view.*
 import com.squareup.picasso.Picasso
 
-class FeedListAdapter(val feedList : MutableList<Character>, val itemClick: (Character) -> Unit) :
-        RecyclerView.Adapter<FeedListAdapter.ViewHolder>() {
+class CharacterListAdapter(val feedList : MutableList<Character>, val itemClick: (Character) -> Unit) :
+        RecyclerView.Adapter<CharacterListAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindFeed(feedList[position])
