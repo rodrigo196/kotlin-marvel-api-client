@@ -7,9 +7,9 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.util.Log
-import android.widget.Toast
 import br.com.bulgasoftwares.feedreader.R
 import br.com.bulgasoftwares.feedreader.controller.CharacterListAdapter
+import br.com.bulgasoftwares.feedreader.extensions.launchActivity
 import br.com.bulgasoftwares.feedreader.model.bean.Character
 import br.com.bulgasoftwares.feedreader.model.bean.Response
 import br.com.bulgasoftwares.feedreader.model.bussines.MarvelBO
@@ -43,7 +43,7 @@ class HomeActivity : AppCompatActivity() {
         feedList.addOnScrollListener(InfiniteScrollListener({requestCharacters()}, linearLayout))
 
         val adapter  = CharacterListAdapter(feedList = ArrayList<Character>()){
-            Toast.makeText(this, "Clicked item " + it.name, Toast.LENGTH_SHORT).show()
+            launchActivity<DetailActivity> { putExtra(DetailActivity.CHARACTER_OBJECT_KEY, it) }
         }
 
         feedList.adapter = adapter

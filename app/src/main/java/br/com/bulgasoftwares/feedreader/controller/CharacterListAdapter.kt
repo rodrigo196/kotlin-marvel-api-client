@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import br.com.bulgasoftwares.feedreader.R
 import br.com.bulgasoftwares.feedreader.extensions.ctx
+import br.com.bulgasoftwares.feedreader.extensions.load
 import br.com.bulgasoftwares.feedreader.model.bean.Character
 import kotlinx.android.synthetic.main.feed_item.view.*
-import com.squareup.picasso.Picasso
 
 class CharacterListAdapter(val feedList : MutableList<Character>, val itemClick: (Character) -> Unit) :
         RecyclerView.Adapter<CharacterListAdapter.ViewHolder>() {
@@ -33,10 +33,7 @@ class CharacterListAdapter(val feedList : MutableList<Character>, val itemClick:
         fun bindFeed(character: Character){
 
             with(character){
-                Picasso.with(itemView.ctx).load(thumbnail?.path
-                        + "."
-                        + thumbnail?.extension)
-                        .into(itemView.icon)
+                itemView.icon.load("${thumbnail?.path}.${thumbnail?.extension}")
                 itemView.name.text = name
                 itemView.setOnClickListener{itemClick(this)}
             }
