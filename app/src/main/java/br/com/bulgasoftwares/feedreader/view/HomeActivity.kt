@@ -33,6 +33,7 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         val toolbar = findViewById(R.id.toolbar) as Toolbar
+        toolbar.title = "Marvel characters"
         setSupportActionBar(toolbar)
 
         val feedList : RecyclerView = findViewById(R.id.feed_list) as RecyclerView
@@ -46,8 +47,6 @@ class HomeActivity : AppCompatActivity() {
         }
 
         feedList.adapter = adapter
-
-        toolbar.title = "Marvel characters"
 
         if (savedInstanceState != null && savedInstanceState.containsKey(KEY_CHARACTERS_LIST)) {
             response = savedInstanceState.get(KEY_CHARACTERS_LIST) as Response
