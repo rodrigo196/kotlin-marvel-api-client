@@ -60,7 +60,8 @@ class HomeActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         if (response != null && response!!.data.results.isNotEmpty()) {
-            response!!.data.results = (feed_list.adapter as CharacterListAdapter).feedList.toMutableList()
+            response!!.data.results = (feed_list.adapter as CharacterListAdapter)
+                    .feedList.toMutableList()
             outState.putSerializable(KEY_CHARACTERS_LIST, response)
         }
     }
@@ -86,7 +87,8 @@ class HomeActivity : AppCompatActivity() {
                 .subscribe(
                         { retrieved ->
                             response = retrieved
-                            (feed_list.adapter as CharacterListAdapter).addCharacters(response?.data?.results!!.toMutableList())
+                            (feed_list.adapter as CharacterListAdapter)
+                                    .addCharacters(response?.data?.results!!.toMutableList())
                         },
                         { e ->
                             Log.e("MarvelBO", e.message)

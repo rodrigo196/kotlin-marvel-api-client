@@ -33,9 +33,9 @@ class CharacterListAdapter(val feedList : MutableList<Character>, val itemClick:
         fun bindFeed(character: Character){
 
             with(character){
-                Picasso.with(itemView.ctx).load(thumbnail.path
+                Picasso.with(itemView.ctx).load(thumbnail?.path
                         + "."
-                        + thumbnail.extension)
+                        + thumbnail?.extension)
                         .into(itemView.icon)
                 itemView.name.text = name
                 itemView.setOnClickListener{itemClick(this)}
