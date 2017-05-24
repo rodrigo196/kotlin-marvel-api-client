@@ -10,7 +10,7 @@ import br.com.bulgasoftwares.feedreader.extensions.load
 import br.com.bulgasoftwares.feedreader.model.bean.Character
 import kotlinx.android.synthetic.main.feed_item.view.*
 
-class CharacterListAdapter(val feedList : MutableList<Character>, val itemClick: (Character) -> Unit) :
+class CharacterListAdapter(val feedList: MutableList<Character>, val itemClick: (Character) -> Unit) :
         RecyclerView.Adapter<CharacterListAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -24,25 +24,25 @@ class CharacterListAdapter(val feedList : MutableList<Character>, val itemClick:
 
     override fun getItemCount() = feedList.size
 
-    fun addCharacters(characters: MutableList<Character>){
-        feedList.addAll(characters)
+    fun addCharacters(characters: MutableList<Character>?) {
+        characters?.let { feedList.addAll(it) }
         notifyDataSetChanged()
     }
 
-    class ViewHolder(view : View, val itemClick: (Character) -> Unit) : RecyclerView.ViewHolder(view){
-        fun bindFeed(character: Character){
+    class ViewHolder(view: View, val itemClick: (Character) -> Unit) : RecyclerView.ViewHolder(view) {
+        fun bindFeed(character: Character) {
 
-            with(character){
+            with(character) {
                 itemView.icon.load("${thumbnail?.path}.${thumbnail?.extension}")
                 itemView.name.text = name
-                itemView.setOnClickListener{itemClick(this)}
+                itemView.setOnClickListener { itemClick(this) }
             }
 
         }
     }
 
-    fun  clearAndAddCharacters(results: MutableList<Character>) {
+    fun clearAndAddCharacters(results: MutableList<Character>?) {
         feedList.clear()
-        feedList.addAll(results)
+        results?.let { feedList.addAll(it) }
     }
 }

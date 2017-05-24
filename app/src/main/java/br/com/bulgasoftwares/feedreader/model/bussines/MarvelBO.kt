@@ -9,7 +9,7 @@ import javax.inject.Singleton
 @Singleton
 class MarvelBO(val api: RestApi) {
 
-    fun getCharacters(after: String, limit: String = "30") : Observable<Response> {
+    fun getCharacters(after: String, limit: String = "30"): Observable<Response> {
 
         return Observable.create {
             subscriber ->
@@ -17,7 +17,7 @@ class MarvelBO(val api: RestApi) {
             val callResponse = api.getCharacters(after, limit)
             val response = callResponse.execute()
 
-            if (response.isSuccessful){
+            if (response.isSuccessful) {
                 val dataResponse = response.body()
 
                 subscriber.onNext(dataResponse)
@@ -29,14 +29,14 @@ class MarvelBO(val api: RestApi) {
 
     }
 
-    fun getCharacter(characterId: String) : Observable<Response> {
+    fun getCharacter(characterId: String): Observable<Response> {
 
         return Observable.create {
             subscriber ->
             val callResponse = api.getCharacter(characterId)
             val response = callResponse.execute()
 
-            if (response.isSuccessful){
+            if (response.isSuccessful) {
                 val dataResponse = response.body()
 
                 subscriber.onNext(dataResponse)

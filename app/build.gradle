@@ -38,6 +38,7 @@ dependencies {
     compile "com.squareup.retrofit2:converter-moshi:2.1.0"
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.google.firebase:firebase-core:10.2.6'
+    compile 'com.miguelcatalan:materialsearchview:1.0.0'
 
     // RxJava & RxAndroid
     compile 'io.reactivex:rxjava:1.1.3'

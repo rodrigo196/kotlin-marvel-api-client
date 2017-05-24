@@ -11,14 +11,32 @@
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+            <com.miguelcatalan.materialsearchview.MaterialSearchView
+                android:id="@+id/search_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#FFFFFF"
+                app:searchBackIcon="@drawable/ic_action_navigation_arrow_back_inverted"
+                app:searchBackground="?attr/colorPrimary"
+                app:searchCloseIcon="@drawable/ic_action_navigation_close_inverted"
+                app:searchSuggestionBackground="@drawable/ic_suggestion" />
+
+        </RelativeLayout>
 
     </android.support.design.widget.AppBarLayout>
+
 
     <include layout="@layout/content_home" />
 
