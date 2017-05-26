@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.Menu
 import br.com.bulgasoftwares.feedreader.R
 import br.com.bulgasoftwares.feedreader.controller.CharacterListAdapter
+import br.com.bulgasoftwares.feedreader.experiments.RssBO
 import br.com.bulgasoftwares.feedreader.extensions.analytics
 import br.com.bulgasoftwares.feedreader.extensions.launchActivity
 import br.com.bulgasoftwares.feedreader.model.bean.Character
@@ -71,6 +72,7 @@ class HomeActivity : AppCompatActivity() {
             requestCharacters()
         }
 
+        requestFeed()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -97,12 +99,12 @@ class HomeActivity : AppCompatActivity() {
         return true
     }
 
-    private fun requestCharacters() {
+    private fun requestCharacters(name: String = "") {
 
         val offset = response?.data?.offset ?: 0
         val count = response?.data?.count ?: 0
 
-        val subscription = bo.getCharacters((offset + count).toString())
+        val subscription = bo.getCharacters((offset + count).toString(), nameStartsWith = name)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -117,5 +119,24 @@ class HomeActivity : AppCompatActivity() {
                         }
                 )
         subscriptions.add(subscription)
+    }
+
+    private fun requestFeed() {
+        val bo = RssBO()
+        val subscription = bo.getPodCastFeed("http://www.mundofreak.com.br/feed/podcast/")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        {
+                            retrieved ->
+                            Snackbar.make(feed_list, "sucesso", Snackbar.LENGTH_LONG).show()
+                        },
+                        {
+                            e ->
+                            Snackbar.make(feed_list, e.message ?: "", Snackbar.LENGTH_LONG).show()
+                        }
+                )
+        subscriptions.add(subscription)
+
     }
 }
